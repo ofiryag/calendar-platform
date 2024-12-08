@@ -1,0 +1,1 @@
+export const EVENT_ROW_CLASSNAME = "flex flex-col text-xs p-3 rounded-sm justify-center line-clamp-3 w-[50vw] h-[4vh] bg-gray-100 hover:bg-gray-200 transition-all duration-250 ease-in-out";
