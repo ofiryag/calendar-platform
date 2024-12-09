@@ -1,12 +1,17 @@
 import { IconEdit, IconTrash } from '@tabler/icons-react'
 import { EventDto } from '../types/events'
 import { EVENT_ROW_CLASSNAME } from '../utilities/classNames'
+import { useContext } from 'react'
+import { EventsContext,EventsContextType } from '../contexts/EventsContext'
 
 type EventProps = {
-  event:EventDto
+  event:EventDto;
+  onRowClick:()=>void;
 }
 
-function EventRow({event}:EventProps) {
+function EventRow({event,onRowClick}:EventProps) {
+  const { archiveEvent } = useContext(EventsContext) as EventsContextType;
+  
   return (
     <div className={EVENT_ROW_CLASSNAME}>
       <div className="flex flex-row justify-between">
@@ -29,8 +34,10 @@ function EventRow({event}:EventProps) {
             
           </div>
         }
-          <IconEdit size={16}/>
-          <IconTrash size={16}/>
+          <IconEdit size={16} className="cursor-pointer" onClick={()=>onRowClick()}/>
+          <IconTrash size={16} className="cursor-pointer" onClick={()=>{
+            archiveEvent(event.id);
+            }}/>
         </div>
       </div>
       

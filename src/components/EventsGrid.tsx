@@ -2,6 +2,11 @@ import { randomId } from '@mantine/hooks';
 import { EventDto } from '../types/events'
 import EmptyEventRow from './EmptyEventRow';
 import EventRow from './EventRow'
+import _ from 'lodash';
+import { useContext, useState } from 'react';
+import { EventsContext, EventsContextType } from '../contexts/EventsContext';
+import EventUpsertForm, { FormType } from './EventUpsertForm';
+import { addHours } from '../utilities/helpers';
 
 function formatHour(hour: number): string {
     // Ensure the hour is always 2 digits (e.g., 01 for 1, 10 for 10)
@@ -26,8 +31,9 @@ function getEventsByHour(date: Date, events: EventDto[]): (EventDto | null)[] {
   
       // Find the event(s) that occur in this hour
       const event = events.find(event => {
+        const copyEnd = new Date(event.endTime)
         const eventStart = new Date(event.startTime);
-        const eventEnd = new Date(event.endTime);
+        const eventEnd = new Date(copyEnd.setSeconds(-1));
         
         // Check if event occurs within the current hour
         return eventStart <= endOfHour && eventEnd >= startOfHour;
@@ -40,29 +46,48 @@ function getEventsByHour(date: Date, events: EventDto[]): (EventDto | null)[] {
     return eventArray;
   }
 
-type EventsGridProps = {
-    selectedDay?:Date;
-    events:EventDto[]
-    onRowClick:(hour:number)=>void;
-}
+function EventsGrid() {
+    const { activeEvents, selectedDate,setSelectedDate } = useContext(EventsContext) as EventsContextType;
+    const [addEventModalState, setAddEventModalState] = useState(false);
+    const [eventFormType, setEventFormType] = useState<FormType>()
+    const [initalEvent, setInitialEvent] = useState<EventDto>()
+    const onRowClick = (hour:number,event?:EventDto)=>{
+        selectedDate?.setHours(0)
+        if(selectedDate)
+        {
+            setSelectedDate(addHours(selectedDate,hour))
+            setAddEventModalState(true);
+            if(event)
+            {
+                setInitialEvent(event);
+                setEventFormType(FormType.Update)
+            }
+            else
+            {
+                setEventFormType(FormType.Create)
+                setInitialEvent(undefined);
+            }
 
-function EventsGrid({events, selectedDay,onRowClick}:EventsGridProps) {
+        }
+      }
+
+
     let eventsByHour:(EventDto|null)[] = [];
-    if(selectedDay)
-        eventsByHour = getEventsByHour(selectedDay, events);
+    if(selectedDate)
+        eventsByHour = getEventsByHour(selectedDate, activeEvents);
     
   return (
     <div className="flex flex-col">
-        {!selectedDay ? <div><h1 className="justify-center items-center underline font-bold">Coming Soon...</h1> {events.slice(0,5).map((e,index)=>
-            <div className="flex flex-row items-center gap-4">            
-                <EventRow key={randomId()} event={e} />
+        <EventUpsertForm opened={addEventModalState} setOpened={setAddEventModalState} formType={eventFormType} initialEvent={initalEvent}/>
+        {!selectedDate ? <div><h1 className="justify-center items-center underline font-bold">Coming Soon Events...</h1> {_.isEmpty(activeEvents) ?<label>None</label> : activeEvents.slice(0,5).map((e,index)=>
+            <div key={`${e?.id}_index`} className="flex flex-row items-center gap-4">            
+                <EventRow onRowClick={()=>onRowClick(index,e)} key={randomId()} event={e} />
             </div>
-            
         )}</div> : eventsByHour.map((e,index)=>
-            <div className="flex flex-row items-center gap-4 maxh-full h-full overflow-auto">
+            <div key={`${e?.id}_${index}`} className="flex flex-row items-center gap-4 maxh-full h-full overflow-auto">
                 <label className="flex">{formatHour(index)}</label>
                 {!e ? <EmptyEventRow key={randomId()} onRowClick={()=>onRowClick(index)}/>:
-                <EventRow key={randomId()} event={e} />}
+                <EventRow onRowClick={()=>onRowClick(index,e)} key={randomId()}  event={e} />}
             </div>
             )}
     </div>

@@ -2,6 +2,7 @@ import { EventDto } from "../types/events";
 
 export const EVENTS_DATA: EventDto[] = [
     {
+        "id":"1",
       "name": "Winter Festival",
       "description": "A festive celebration of the winter season with music, food, and ice skating.",
       "startTime": new Date("2024-12-10T18:00:00Z"),
@@ -11,6 +12,7 @@ export const EVENTS_DATA: EventDto[] = [
       "archived": false
     },
     {
+        "id":"2",
       "name": "Holiday Market",
       "description": "A market featuring handmade gifts, local crafts, and festive treats.",
       "startTime": new Date("2024-12-15T10:00:00Z"),
@@ -20,6 +22,7 @@ export const EVENTS_DATA: EventDto[] = [
       "archived": false
     },
     {
+        "id":"3",
       "name": "New Year Countdown Party",
       "description": "Celebrate the arrival of the new year with a live DJ, food, and drinks.",
       "startTime": new Date("2024-12-31T22:00:00Z"),
@@ -28,6 +31,7 @@ export const EVENTS_DATA: EventDto[] = [
       "archived": false
     },
     {
+        "id":"4",
       "name": "Winter Concert Series",
       "description": "A series of classical and contemporary music performances during winter.",
       "startTime": new Date("2025-01-05T19:00:00Z"),
@@ -37,6 +41,7 @@ export const EVENTS_DATA: EventDto[] = [
       "archived": false
     },
     {
+        "id":"5",
       "name": "January Ski Trip",
       "description": "Join us for a weekend of skiing and snowboarding in the mountains.",
       "startTime": new Date("2025-01-12T08:00:00Z"),
@@ -45,6 +50,7 @@ export const EVENTS_DATA: EventDto[] = [
       "archived": false
     },
     {
+        "id":"6",
       "name": "Valentine's Day Gala",
       "description": "A romantic evening with dinner, dancing, and entertainment to celebrate love.",
       "startTime": new Date("2025-02-14T19:00:00Z"),
@@ -53,6 +59,7 @@ export const EVENTS_DATA: EventDto[] = [
       "archived": false
     },
     {
+        "id":"7",
       "name": "Spring Fashion Show",
       "description": "A runway show featuring the latest spring trends and fashion designs.",
       "startTime": new Date("2025-02-20T18:00:00Z"),
@@ -62,4 +69,3 @@ export const EVENTS_DATA: EventDto[] = [
     }
   ];  
 
-  

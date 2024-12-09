@@ -6,8 +6,8 @@ type EmptyEventRowProps ={
 }
 
 function EmptyEventRow({onRowClick}:EmptyEventRowProps) {
-  return <div onClick={()=>onRowClick()} className={EVENT_ROW_CLASSNAME}>
-    <IconPlus size={20}/>
+  return <div onClick={()=>onRowClick()} className={`${EVENT_ROW_CLASSNAME} cursor-pointer`}>
+    <IconPlus size={20} className="cursor-pointer"/>
     </div>
 }
 

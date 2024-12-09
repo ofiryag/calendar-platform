@@ -11,6 +11,7 @@ export const dateHasEvent = (date: Date, events: EventDto[]): boolean=> {
       const eventStart = new Date(event.startTime);
       eventStart.setHours(0, 0, 0, 0); // Normalize to start of the day
       const eventEnd = new Date(event.endTime);
+      eventEnd.setSeconds(-1);
       eventEnd.setHours(0, 0, 0, 0); // Normalize to start of the day
   
       // Check if the given date is within the event's duration
